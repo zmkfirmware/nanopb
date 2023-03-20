@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(nanopb C)
 
-set(nanopb_VERSION_STRING nanopb-0.4.6)
+set(nanopb_VERSION_STRING nanopb-0.4.7)
 set(nanopb_SOVERSION 0)
 
 string(REPLACE "nanopb-" "" nanopb_VERSION ${nanopb_VERSION_STRING})
@@ -14,7 +14,7 @@ option(nanopb_BUILD_RUNTIME "Build the headers and libraries needed at runtime" 
 option(nanopb_BUILD_GENERATOR "Build the protoc plugin for code generation" ON)
 option(nanopb_MSVC_STATIC_RUNTIME "Link static runtime libraries" ON)
 
-find_program(nanopb_PROTOC_PATH protoc)
+find_program(nanopb_PROTOC_PATH protoc HINTS generator-bin generator)
 if(NOT EXISTS ${nanopb_PROTOC_PATH})
     message(FATAL_ERROR "protoc compiler not found")
 endif()
@@ -123,7 +123,7 @@ if(nanopb_BUILD_RUNTIME)
             ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
         target_include_directories(protobuf-nanopb-static INTERFACE
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-	        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
         )
     endif()
 
